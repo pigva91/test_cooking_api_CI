@@ -15,14 +15,14 @@ router = APIRouter()
 @router.get("/recipes", response_model=List[RecipeInList])
 async def get_recipes(session: AsyncSession = Depends(get_db)):
     result = await session.execute(
-        select(Recipe).order_by( Recipe.views.desc(), Recipe.cooking_time.asc())
+        select(Recipe).order_by(Recipe.views.desc(), Recipe.cooking_time.asc())
     )
     return result.scalars().all()
 
 
 @router.get("/recipes/{recipe_id}", response_model=RecipeDetail)
 async def get_recipe_detail(
-        recipe_id: int, session: AsyncSession = Depends(get_db)
+    recipe_id: int, session: AsyncSession = Depends(get_db)
 ):
     recipe = await session.get(Recipe, recipe_id)
     if not recipe:
